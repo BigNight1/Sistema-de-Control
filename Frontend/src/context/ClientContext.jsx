@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { getClient } from "../api/client";
+import { DeleteClient, getClient } from "../api/client";
 
 const ClienContext = createContext();
 
@@ -22,12 +22,22 @@ export function ClientProvider({ children }) {
       console.log(error);
     }
   };
+  const deleteClient = async (id) => {
+    try {
+      const res = await DeleteClient(id);
+      if (res.status === 204)
+        setClient(prevClients => prevClients.filter((client) => client._id !== id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <ClienContext.Provider
       value={{
         client,
         getClients,
+        deleteClient,
       }}
     >
       {children}

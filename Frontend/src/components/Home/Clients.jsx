@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useClient } from "../../context/ClientContext.jsx";
 
 const Home = () => {
-  const { getClients, client } = useClient();
+  const { getClients, client, deleteClient } = useClient();
 
   useEffect(() => {
     getClients();
@@ -78,9 +78,11 @@ const Home = () => {
                   <td className="px-4 py-2 border border-gray-300"><span>S/</span>{task.yape}</td>
                   <td className="px-4 py-2 border border-gray-300">{task.estado}</td>
                   <td className="px-4 py-2 border border-gray-300">
-                    <div className="flex items-center gap-1">
-                      <FaEdit />
-                      <MdDelete />
+                    <div className="flex items-center gap-4">
+                      <FaEdit className="size-[1.3rem]"/>
+                      <MdDelete onClick={()=>{
+                        deleteClient(task._id)
+                      }} className="size-[1.3rem]"/>
                     </div>
                   </td>
                 </tr>

@@ -1,12 +1,14 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/Home/Clients.jsx";
 import CreateClient from "./components/CreateClient/CreateClient.jsx";
+import Login from "./components/Login/Login.jsx";
 import { ClientProvider } from "./context/ClientContext.jsx";
 
 function App() {
   return (
     <ClientProvider>
       <Routes>
+        <Route path="/" element={<Login />} />
         <Route path="/clients" element={<Home />} />
         <Route path="/create-client" element={<CreateClient />} />
       </Routes>

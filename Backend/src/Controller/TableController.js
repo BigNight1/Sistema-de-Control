@@ -1,7 +1,7 @@
 import clientModel from "../models/clientSchema.js";
 
 export const create_cliente = async (req, res) => {
-  const { fecha, nombre, numero, trabajo,adelanto, estado,hora } = req.body;
+  const { fecha, nombre, numero, trabajo, adelanto, estado, hora } = req.body;
 
   const efectivo = req.body.efectivo || 0;
   const yape = req.body.yape || 0;
@@ -16,10 +16,10 @@ export const create_cliente = async (req, res) => {
       efectivo,
       yape,
       estado,
-      hora
+      hora,
     });
     await newClient.save();
-    res.send("cliente creado");
+    res.sendStatus(204);
   } catch (error) {
     console.log(error);
 
@@ -45,7 +45,7 @@ export const GetClient = async (req, res) => {
 export const DeleteClient = async (req, res) => {
   const client = await clientModel.findByIdAndDelete(req.params.id);
   if (!client) return res.status(404).json({ message: "Task not found" });
-  res.json(client);
+  return res.sendStatus(204);
 };
 
 export const UptdateClient = async (req, res) => {
