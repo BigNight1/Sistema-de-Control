@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { createClient } from "../../api/client";
+import { useClient } from "../../context/ClientContext.jsx";
+
 
 const CreateClient = () => {
+  const { createClients } = useClient();
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm();
-
+  
   useEffect(() => {
     const currentDate = new Date();
 
@@ -31,31 +33,13 @@ const CreateClient = () => {
     setValue("hora", formattedTime);
   }, [setValue]);
 
-  const onSubmit = async (data) => {
-    try {
-      // Dependiendo de la forma de pago seleccionada, asignar el precio a efectivo o yape
-      if (data.formaPago === "efectivo") {
-        data.efectivo = data.precio;
-        data.yape = 0;
-      } else if (data.formaPago === "yape") {
-        data.yape = data.precio;
-        data.efectivo = 0;
-      }
-      delete data.precio; // Eliminar el campo de precio para no enviarlo al backend
-
-      const res = await createClient(data);
-      console.log(res);
-    } catch (error) {
-      console.error("Error al crear el cliente:", error);
-    }
-  };
-
+// Usar Navigate de react router dom 
   return (
     <>
       <h1 className="text-center text-3xl font-bold mb-4">Crear Cliente</h1>
       <div className="max-w-md mx-auto">
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(createClients)}
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         >
           <div className="mb-4">
