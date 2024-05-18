@@ -1,5 +1,22 @@
 import clientModel from "../models/clientSchema.js";
 
+export const searchClient = async (req, res) => {
+  const { terms } = req.query;
+
+  try {
+    const regex = new RegExp(terms, "i");
+
+    const resultados = await clientModel.find({
+      $or: [{ nombre: { $regex: regex } }],
+    });
+
+    res.json(resultados);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error al buscar clientes" });
+  }
+};
+
 export const create_cliente = async (req, res) => {
   const { fecha, nombre, numero, trabajo, adelanto, estado, hora } = req.body;
 
