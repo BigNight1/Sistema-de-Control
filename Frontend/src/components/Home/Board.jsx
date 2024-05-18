@@ -2,14 +2,10 @@ import React from "react";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-
-const Board = ({searchTerms,
-  setSearchTerms,
-  filteredResults,
-  deleteClient,client}) => {
+const Board = ({ searchTerms, filteredResults, client, deleteClient }) => {
   return (
     <div className="mt-4 overflow-x-auto shadow rounded-md">
-      <table className="table-auto w-full min-w-max">
+      <table className="table-auto w-full min-w-max ">
         <thead>
           <tr>
             <th className="text-center px-4 py-2 bg-gray-200">Fecha</th>
@@ -54,7 +50,7 @@ const Board = ({searchTerms,
                 {task.estado}
               </td>
               <td className="px-4 py-2 border border-gray-300">
-                <div className="flex items-center gap-4">
+                <div className="flex justify-center	 items-center gap-4">
                   <FaEdit className="size-[1.3rem]" />
                   <MdDelete
                     onClick={() => {

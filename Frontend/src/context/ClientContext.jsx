@@ -1,6 +1,8 @@
+import Swal from "sweetalert2"
 import { createContext, useContext, useState } from "react";
 import { DeleteClient, getClient , createClient} from "../api/client";
-import Swal from "sweetalert2"
+import { SearchName } from "../api/search";
+
 
 const ClienContext = createContext();
 
@@ -14,6 +16,18 @@ export const useClient = () => {
 
 export function ClientProvider({ children }) {
   const [client, setClient] = useState([]);
+  const [searchTerms, setSearchTerms] = useState("");
+  const [filteredResults, setFilteredResults] = useState([]);
+
+
+  const SearchClient = async (searchTerms) => {
+    try{
+      const response = await SearchName(searchTerms);
+      setFilteredResults(response.data);
+    }catch(error){
+      console.error("Error al buscar clientes", error);
+    }
+  }
 
   const createClients = async (data) => {
     try {
@@ -30,18 +44,17 @@ export function ClientProvider({ children }) {
       const res = await createClient(data);
       if(res.status === 204){
         Swal.fire({
-          position: "top-end",
+          position: "center",
           icon: "success",
-          title: "Your work has been saved",
+          title: "Cliente Creado",
           showConfirmButton: false,
-          timer: 1500
+          timer: 1000
         });
       }
     } catch (error) {
       console.error("Error al crear el cliente:", error);
     }
   };
-
   const getClients = async () => {
     try {
       const res = await getClient();
@@ -68,7 +81,12 @@ export function ClientProvider({ children }) {
         client,
         getClients,
         deleteClient,
-        createClients
+        createClients,
+        SearchClient,
+        searchTerms,
+        setSearchTerms,
+        filteredResults,
+        setFilteredResults
       }}
     >
       {children}

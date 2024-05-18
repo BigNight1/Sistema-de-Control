@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useClient } from "../../context/ClientContext.jsx";
+import { useNavigate } from "react-router-dom";
 
 
 const CreateClient = () => {
@@ -33,13 +34,21 @@ const CreateClient = () => {
     setValue("hora", formattedTime);
   }, [setValue]);
 
-// Usar Navigate de react router dom 
+  const navigate = useNavigate(); // Hook para navegación
+
+  const onSubmit = (data) => {
+    createClients(data);
+    setTimeout(() => {
+      navigate("/clients");
+    }, 1200); // Redirigir después de 1 segundo
+  };
+
   return (
     <>
       <h1 className="text-center text-3xl font-bold mb-4">Crear Cliente</h1>
       <div className="max-w-md mx-auto">
         <form
-          onSubmit={handleSubmit(createClients)}
+          onSubmit={handleSubmit(onSubmit)}
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         >
           <div className="mb-4">
@@ -133,15 +142,23 @@ const CreateClient = () => {
               <option value="yape">Yape</option>
             </select>
           </div>
+
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Estado:
             </label>
-            <input
-              type="text"
+
+            <select
+              name="estado"
               {...register("estado", { required: true })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="Entregado">Finalizado </option>
+              <option value="En proceso">En proceso</option>
+              <option value="Cancelado">Cancelado</option>
+
+            </select>
           </div>
 
           <button
