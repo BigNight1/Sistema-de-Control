@@ -17,6 +17,8 @@ const clientSchema = new mongoose.Schema(
     trabajo: { type: String },
     efectivo: { type: Number, default: 0 },
     yape: { type: Number, default: 0 },
+    precio: {type: Number , default: 0},
+    gastos : {type: Number , default: 0},
     estado: { type: String },
     hora: {type: String}
   }

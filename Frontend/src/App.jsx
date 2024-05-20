@@ -1,16 +1,22 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./components/Home/Clients.jsx";
-import CreateClient from "./components/CreateClient/CreateClient.jsx";
+import Welcome from "./pages/Welcome.jsx";
+import CreateClient from "./pages/CreateClient.jsx";
 import Login from "./components/Login/Login.jsx";
 import { ClientProvider } from "./context/ClientContext.jsx";
+import Clientes from "./pages/Clientes.jsx";
+import PageError from "./pages/PageError.jsx";
+import DashBoard from "./components/DashBoard/DashBoard";
 
 function App() {
   return (
     <ClientProvider>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/clients" element={<Home />} />
-        <Route path="/create-client" element={<CreateClient />} />
+        <Route path="/welcome" element={<Welcome />} />
+        <Route path="/clientes" element={<Clientes />} />
+        <Route path="/clientes/create-client" element={<CreateClient />} />
+        <Route path="/Dashboard" element={<DashBoard />} />
+        <Route path="*" element={<PageError/>} />
       </Routes>
     </ClientProvider>
   );
