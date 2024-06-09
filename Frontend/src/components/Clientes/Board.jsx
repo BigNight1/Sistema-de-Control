@@ -2,8 +2,14 @@ import React from "react";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { Chip } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
-const Board = ({ searchTerms, filteredResults, client, deleteClient }) => {
+const Board = ({
+  searchTerms,
+  filteredResults,
+  client,
+  deleteClient,
+}) => {
   return (
     <div className="m-2 overflow-x-auto shadow rounded-md">
       <table className="table-auto w-full min-w-max ">
@@ -74,7 +80,9 @@ const Board = ({ searchTerms, filteredResults, client, deleteClient }) => {
 
               <td className="px-4 py-2 border border-gray-300">
                 <div className="flex justify-center	 items-center gap-4">
-                  <FaEdit className="size-[1.3rem]" />
+                  <Link to={`/client/${task._id}`}>
+                    <FaEdit className="size-[1.3rem]" />
+                  </Link>
                   <MdDelete
                     onClick={() => {
                       deleteClient(task._id);

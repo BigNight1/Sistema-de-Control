@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { useClient } from "../context/ClientContext.jsx";
 import Formulario from "../components/CreateClient/Formulario.jsx";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
 
 const CreateClient = () => {
-  const { createClients } = useClient();
+  const { getClienteId } = useClient();
   const {
     register,
     handleSubmit,
@@ -15,24 +17,13 @@ const CreateClient = () => {
 
   const [formaPago, setFormaPago] = useState("");
   const [estado, setEstado] = useState("");
+  const [pago, setPago] = useState("");
 
   useEffect(() => {
-    const currentDate = new Date();
+    const currentDate = dayjs();
+    const formattedDate = currentDate.format("DD/MM/YYYY");
+    const formattedTime = currentDate.format("HH:mm");
 
-    const formattedDate = `${currentDate
-      .getDate()
-      .toString()
-      .padStart(2, "0")}/${(currentDate.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}/${currentDate.getFullYear()}`;
-    const formattedTime = `${currentDate
-      .getHours()
-      .toString()
-      .padStart(2, "0")}:${currentDate
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}`;
-    // Asignar la fecha actual al campo "fecha"
     setValue("fecha", formattedDate);
     setValue("hora", formattedTime);
   }, [setValue]);
@@ -44,26 +35,24 @@ const CreateClient = () => {
   useEffect(() => {
     setValue("estado", estado);
   }, [estado, setValue]);
-  const navigate = useNavigate(); // Hook para navegación
 
-  const onSubmit = (data) => {
-    createClients(data);
-    setTimeout(() => {
-      navigate("/welcome");
-    }, 1200); // Redirigir después de 1 segundo
-  };
-
+  useEffect(() => {
+    setValue("pago", pago);
+  }, [pago, setValue]);
   return (
     <div>
       <Formulario
         handleSubmit={handleSubmit}
         register={register}
         errors={errors}
-        onSubmit={onSubmit}
         setFormaPago={setFormaPago}
         setEstado={setEstado}
         formaPago={formaPago}
         estado={estado}
+        getClienteId={getClienteId}
+        setValue={setValue}
+        pago={pago}
+        setPago={setPago}
       />
     </div>
   );

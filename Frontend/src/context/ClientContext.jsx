@@ -5,6 +5,8 @@ import {
   getClient,
   createClient,
   CountClient,
+  getClientId,
+  UpdateClient,
 } from "../api/client.js";
 import { SearchName } from "../api/search.js";
 import { SumPaymentsyape, SumPaymentscash } from "../api/payments.js";
@@ -89,6 +91,7 @@ export function ClientProvider({ children }) {
       console.log(error);
     }
   };
+
   const sumPaymentsYape = async () => {
     try {
       const res = await SumPaymentsyape();
@@ -105,12 +108,29 @@ export function ClientProvider({ children }) {
       console.log(error);
     }
   };
+  const getClienteId = async (id) => {
+    try {
+      const res = await getClientId(id);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const updateClient = async (id, client) => {
+    try {
+      await UpdateClient(id, client);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <ClienContext.Provider
       value={{
         client,
         getClients,
+        getClienteId,
+        updateClient,
         deleteClient,
         createClients,
         SearchClient,
@@ -123,7 +143,7 @@ export function ClientProvider({ children }) {
         sumPaymentsYape,
         sumPaymentsCash,
         Cash,
-        Yape
+        Yape,
       }}
     >
       {children}

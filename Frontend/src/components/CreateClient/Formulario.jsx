@@ -1,31 +1,116 @@
 import { Select, Option } from "@material-tailwind/react";
 import { Input } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useClient } from "../../context/ClientContext";
 
 const Formulario = ({
   handleSubmit,
   register,
   errors,
-  onSubmit,
   setFormaPago,
   setEstado,
   formaPago,
   estado,
+  getClienteId,
+  setValue,
+  pago,
+  setPago,
 }) => {
+  const { createClients, updateClient } = useClient();
+  const navigate = useNavigate();
+  const params = useParams();
+  const [dejarAdelanto, setDejarAdelanto] = useState(false);
+  const [task, setTask] = useState(null);
+
+  useEffect(() => {
+    async function loadTask() {
+      if (params.id) {
+        const taskData = await getClienteId(params.id);
+        console.log(taskData)
+        setTask(taskData);
+        setValue("fecha", taskData.fecha);
+        setValue("nombre", taskData.nombre);
+        setValue("numero", taskData.numero);
+        setValue("trabajo", taskData.trabajo);
+        setValue("adelanto", taskData.adelanto);
+        setValue("precio", taskData.precio);
+        setValue("gastos", taskData.gastos);
+        setValue("estado", taskData.estado);
+        setValue("formaPago", taskData.formaPago);
+        setFormaPago(taskData.formaPago);
+        setEstado(taskData.estado);
+
+       // Asignar el valor correcto a 'pago' basado en 'formaPago'
+        if (taskData.formaPago === "efectivo") {
+          setValue("pago", taskData.efectivo);
+          setPago(taskData.efectivo);
+        } else if (taskData.formaPago === "yape") {
+          setValue("pago", taskData.yape);
+          setPago(taskData.yape);
+        }
+
+        if(taskData.adelanto){
+          setDejarAdelanto(true)
+        }
+      }
+    }
+    loadTask();
+  }, [params.id, getClienteId, setValue, setFormaPago, setEstado, setPago]);
+
+  const handleFormaPagoChange = (val) => {
+    setFormaPago(val);
+    setValue("formaPago", val);
+    if (task) {
+      if (val === "efectivo") {
+        setValue("pago", task.efectivo);
+        setPago(task.efectivo);
+      } else if (val === "yape") {
+        setValue("pago", task.yape);
+        setPago(task.yape);
+      }
+    }
+  };
+
+  const onSubmit = (data) => {
+    const payload = {
+      ...data,
+    };
+
+    if (data.formaPago === "efectivo") {
+      payload.efectivo = data.pago;
+      payload.yape = data.yape;
+    } else if (data.formaPago === "yape") {
+      payload.yape = data.pago;
+      payload.efectivo = data.efectivo;
+    }
+
+    if (params.id) {
+      updateClient(params.id, payload);
+    } else {
+      createClients(payload);
+      console.log(payload);
+    }
+
+    setTimeout(() => {
+      navigate("/welcome");
+    }, 1200); // Redirigir después de 1 segundo
+  };
+
   return (
     <div className="h-screen">
-      <div className="flex flex-col items-center	 justify-center h-full w-full">
-        <h1 className=" text-3xl font-bold mb-4">Crear Cliente</h1>
+      <div className="flex flex-col items-center justify-center h-full w-full">
+        <h1 className="text-3xl font-bold mb-4">Crear Cliente</h1>
         <div className="w-[400px]">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
           >
-            {/* Fecha*/}
+            {/* Fecha */}
             <div className="mb-4">
               <label className="block text-blue-gray-700 text-sm font-bold mb-2">
                 Fecha:
               </label>
-
               <Input
                 label="Fecha"
                 type="text"
@@ -43,7 +128,6 @@ const Formulario = ({
               />
             </div>
             {/* Nombre */}
-
             <div className="mb-4">
               <Input
                 label="Nombre"
@@ -55,7 +139,6 @@ const Formulario = ({
               )}
             </div>
             {/* Número */}
-
             <div className="mb-4">
               <Input
                 label="Número"
@@ -89,32 +172,34 @@ const Formulario = ({
                 {...register("trabajo", { required: true })}
               />
               {errors.trabajo && (
-                <p className="text-[red]">Es necesario el Trabajo</p>
+                <p className="text-[red]">
+                  Es necesario la Descripcion del Trabajo
+                </p>
               )}
             </div>
-            {/* Adelanto */}
-
-            <div className="mb-4">
-              <Input
-                label="Adelanto"
-                type="text"
-                {...register("adelanto")}
+            {/* Dejar adelanto */}
+            <div className="mb-4 flex items-center">
+              <input
+                type="checkbox"
+                checked={dejarAdelanto}
+                className="size-4 mr-1"
+                onChange={(e) => setDejarAdelanto(e.target.checked)}
               />
+              <label className="block text-blue-gray-700 text-sm font-bold">
+                ¿Desea dejar un adelanto?
+              </label>
             </div>
-            {/* Pago */}
-
-            <div className="mb-4">
-              <Input
-                label="Pago"
-                type="text"
-                {...register("pago")}
-              />
-              {errors.pago && (
-                <p className="text-[red]">Es necesario el Precio</p>
-              )}
-            </div>
+            {/* Monto del adelanto (condicional) */}
+            {dejarAdelanto && (
+              <div className="mb-4">
+                <Input
+                  label="Adelanto"
+                  type="text"
+                  {...register("adelanto")} // Registrar el campo "adelanto"
+                />
+              </div>
+            )}
             {/* Precio */}
-
             <div className="mb-4">
               <Input
                 label="Precio"
@@ -125,18 +210,30 @@ const Formulario = ({
                 <p className="text-[red]">Es necesario el Precio</p>
               )}
             </div>
+            {/* Pago */}
+            <div className="mb-4">
+              <Input
+                label="Pago"
+                type="text"
+                value={pago}
+                onChange={(e) => {
+                  setPago(e.target.value);
+                }}
+              />
+              {errors.pago && (
+                <p className="text-[red]">Es necesario el Pago</p>
+              )}
+            </div>
             {/* Gastos */}
-
             <div className="mb-4">
               <Input label="Gastos" type="text" {...register("gastos")} />
             </div>
             {/* Forma de Pago */}
-
             <div className="mb-4">
               <Select
                 label="Forma de Pago"
                 value={formaPago}
-                onChange={(val) => setFormaPago(val)}
+                onChange={(val) => handleFormaPagoChange(val)}
               >
                 <Option value="">Selecciona una opción</Option>
                 <Option value="efectivo">Efectivo</Option>
@@ -147,12 +244,14 @@ const Formulario = ({
               )}
             </div>
             {/* Estado */}
-
             <div className="mb-4">
               <Select
                 label="Estado"
                 value={estado}
-                onChange={(val) => setEstado(val)}
+                onChange={(val) => {
+                  setEstado(val);
+                  setValue("estado", val);
+                }}
               >
                 <Option value="">Selecciona una opción</Option>
                 <Option value="Entregado">Entregado</Option>
@@ -161,7 +260,6 @@ const Formulario = ({
               </Select>
               {errors.estado && <p className="text-[red]">Campo requerido</p>}
             </div>
-
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

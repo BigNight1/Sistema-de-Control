@@ -12,6 +12,7 @@ const Clientes = () => {
     filteredResults,
     SearchClient,
     setFilteredResults,
+    getClient
   } = useClient();
   useEffect(() => {
     getClients();
@@ -31,6 +32,7 @@ const Clientes = () => {
         filteredResults={filteredResults}
         client={client}
         deleteClient={deleteClient}
+        getClient={getClient}
       />
     </div>
   );

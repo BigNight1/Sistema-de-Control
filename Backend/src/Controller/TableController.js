@@ -18,20 +18,28 @@ export const searchClient = async (req, res) => {
 };
 
 export const create_cliente = async (req, res) => {
-  const { fecha, nombre, numero, trabajo,precio, estado, hora } = req.body;
+  const { fecha, nombre, numero, trabajo, precio, estado, hora, formaPago } = req.body;
 
+  // Inicializar efectivo y yape en 0
   const efectivo = req.body.efectivo || 0;
   const yape = req.body.yape || 0;
   const gastos = req.body.gastos || 0;
-  const adelanto = req.body.adelanto || 0
+  const adelanto = req.body.adelanto || 0;
+
   try {
+    // Validar los datos recibidos
+    if (!fecha || !nombre || !numero || !trabajo || !precio || !estado || !hora || !formaPago) {
+      throw new Error("Faltan campos obligatorios en la solicitud");
+    }
+
+    // Crear un nuevo cliente
     const newClient = new clientModel({
       fecha,
       nombre,
       numero,
       trabajo,
       adelanto,
-      efectivo,
+      efectivo ,
       yape,
       precio,
       gastos,
@@ -39,15 +47,19 @@ export const create_cliente = async (req, res) => {
       hora,
     });
 
-    await newClient.save();
+    // Guardar el cliente en la base de datos
+    const savedClient = await newClient.save();
     res.sendStatus(204);
-  } catch (error) {
-    console.log(error);
+    console.log(savedClient); // Imprimir el objeto que se guardó en la base de datos
 
+  } catch (error) {
+    console.error(error);
+
+    // Devolver una respuesta de error apropiada
     if (error.name === "ValidationError") {
-      res.status(400).send({ error: error.message });
+      res.status(400).send({ error: error.message }); // Mensaje de error de validación detallado
     } else {
-      res.status(500).send({ error: "Ocurrio un error al crear el cliente" });
+      res.status(500).send({ error: "Ocurrió un error al crear el cliente" }); // Error genérico de servidor
     }
   }
 };
@@ -81,7 +93,7 @@ export const DeleteClient = async (req, res) => {
 export const UptdateClient = async (req, res) => {
   const client = await clientModel.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
-  });
+    });
   if (!client) return res.status(404).json({ message: "Task not found" });
   res.json(client);
 };

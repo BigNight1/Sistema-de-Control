@@ -21,10 +21,10 @@ const clientSchema = new mongoose.Schema(
     gastos : {type: Number , default: 0},
     estado: { type: String },
     hora: {type: String}
-  }
-  // {
-  //   timestamps: true,
-  // }
+  },
+   {
+     timestamps: true,
+   }
 );
 
 const clientModel = mongoose.model("Client", clientSchema);

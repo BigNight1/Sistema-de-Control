@@ -16,6 +16,7 @@ function App() {
         <Route path="/clientes" element={<Clientes />} />
         <Route path="/clientes/create-client" element={<CreateClient />} />
         <Route path="/Dashboard" element={<DashBoard />} />
+        <Route path="/client/:id" element={<CreateClient/>}/>
         <Route path="*" element={<PageError/>} />
       </Routes>
     </ClientProvider>
