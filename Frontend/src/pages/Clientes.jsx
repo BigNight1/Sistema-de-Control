@@ -1,41 +1,16 @@
-import React, { useEffect } from "react";
-import { useClient } from "../context/ClientContext";
-import Board from "../components/Clientes/Board";
-import SearchCliente from "../components/Clientes/SearchClient";
+import React from 'react'
+import Sliderbar from '../components/Welcome/Sliderbar'
+import ViewClientes from '../components/Clientes/ViewClientes'
 
 const Clientes = () => {
-  const {
-    getClients,
-    deleteClient,
-    client,
-    searchTerms,
-    filteredResults,
-    SearchClient,
-    setFilteredResults,
-    getClient
-  } = useClient();
-  useEffect(() => {
-    getClients();
-  }, []);
-  useEffect(() => {
-    if (searchTerms) {
-      SearchClient(searchTerms);
-    } else {
-      setFilteredResults(client);
-    }
-  }, [searchTerms, client]);
   return (
-    <div className="my-2">
-      <SearchCliente />
-      <Board
-        searchTerms={searchTerms}
-        filteredResults={filteredResults}
-        client={client}
-        deleteClient={deleteClient}
-        getClient={getClient}
-      />
+    <div className="clientes flex h-screen">
+        <Sliderbar/>
+        <div className='flex-grow p-4'>
+            <ViewClientes/>
+        </div>
     </div>
-  );
-};
+  )
+}
 
-export default Clientes;
+export default Clientes

@@ -14,6 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import Client_icon from "../../Icons/Client-icon.jsx";
 import Create_icon from "../../Icons/Create-icon.jsx";
+
 const Sliderbar = () => {
   return (
     <div className="flex">
@@ -47,14 +48,14 @@ const Sliderbar = () => {
             </ListItem>
           </Link>
 
-          <Link to="/clientes/create-client">
+          {/* <Link to="/clientes/create-client">
             <ListItem>
               <ListItemPrefix>
                 <Create_icon className="h-5 w-5" />
               </ListItemPrefix>
               Crear
             </ListItem>
-          </Link>
+          </Link> */}
           <hr className="my-2 border-blue-gray-50" />
 
           <ListItem>
@@ -72,10 +73,6 @@ const Sliderbar = () => {
           </ListItem>
         </List>
       </Card>
-      <div className="w-[85%] p-2">
-        <div className="flex justify-between">
-        </div>
-      </div>
     </div>
   );
 };

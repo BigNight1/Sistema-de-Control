@@ -4,12 +4,10 @@ import {
   DeleteClient,
   getClient,
   createClient,
-  CountClient,
   getClientId,
   UpdateClient,
+  SearchName
 } from "../api/client.js";
-import { SearchName } from "../api/search.js";
-import { SumPaymentsyape, SumPaymentscash } from "../api/payments.js";
 
 const ClienContext = createContext();
 
@@ -23,11 +21,8 @@ export const useClient = () => {
 
 export function ClientProvider({ children }) {
   const [client, setClient] = useState([]);
-  const [Count, setCount] = useState(0);
   const [searchTerms, setSearchTerms] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
-  const [Cash, setCash] = useState(0);
-  const [Yape, setYape] = useState(0);
 
   const SearchClient = async (searchTerms) => {
     try {
@@ -37,7 +32,6 @@ export function ClientProvider({ children }) {
       console.error("Error al buscar clientes", error);
     }
   };
-
   const createClients = async (data) => {
     try {
       // Dependiendo de la forma de pago seleccionada, asignar el precio a efectivo o yape
@@ -64,14 +58,6 @@ export function ClientProvider({ children }) {
       console.error("Error al crear el cliente:", error);
     }
   };
-  const CounterClient = async () => {
-    try {
-      const res = await CountClient();
-      setCount(res.data.totalCliente);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const getClients = async () => {
     try {
       const res = await getClient();
@@ -87,23 +73,6 @@ export function ClientProvider({ children }) {
         setClient((prevClients) =>
           prevClients.filter((client) => client._id !== id)
         );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const sumPaymentsYape = async () => {
-    try {
-      const res = await SumPaymentsyape();
-      setYape(res.data.totalYape);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const sumPaymentsCash = async () => {
-    try {
-      const res = await SumPaymentscash();
-      setCash(res.data.totalCash);
     } catch (error) {
       console.log(error);
     }
@@ -138,12 +107,6 @@ export function ClientProvider({ children }) {
         setSearchTerms,
         filteredResults,
         setFilteredResults,
-        CounterClient,
-        Count,
-        sumPaymentsYape,
-        sumPaymentsCash,
-        Cash,
-        Yape,
       }}
     >
       {children}

@@ -3,7 +3,6 @@ import {
   searchClient,
   create_cliente,
   GetClient,
-  ClientCount,
   GetClients,
   UptdateClient,
   DeleteClient,
@@ -14,7 +13,6 @@ const router = Router();
 
 router.get("/search", searchClient)
 router.get("/clients", GetClients);
-router.get("/clientCount", ClientCount);
 router.get("/client/:id", GetClient);
 router.post("/create-client", create_cliente);
 router.put("/updateclient/:id", UptdateClient);

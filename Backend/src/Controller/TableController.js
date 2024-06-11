@@ -18,7 +18,8 @@ export const searchClient = async (req, res) => {
 };
 
 export const create_cliente = async (req, res) => {
-  const { fecha, nombre, numero, trabajo, precio, estado, hora, formaPago } = req.body;
+  const { fecha, nombre, numero, trabajo, precio, estado, hora, formaPago } =
+    req.body;
 
   // Inicializar efectivo y yape en 0
   const efectivo = req.body.efectivo || 0;
@@ -28,7 +29,15 @@ export const create_cliente = async (req, res) => {
 
   try {
     // Validar los datos recibidos
-    if (!fecha || !nombre || !numero || !trabajo || !precio || !estado || !hora || !formaPago) {
+    if (
+      !fecha ||
+      !nombre ||
+      !numero ||
+      !trabajo ||
+      !estado ||
+      !hora ||
+      !precio
+    ) {
       throw new Error("Faltan campos obligatorios en la solicitud");
     }
 
@@ -39,11 +48,12 @@ export const create_cliente = async (req, res) => {
       numero,
       trabajo,
       adelanto,
-      efectivo ,
+      efectivo,
       yape,
       precio,
       gastos,
       estado,
+      formaPago,
       hora,
     });
 
@@ -51,7 +61,6 @@ export const create_cliente = async (req, res) => {
     const savedClient = await newClient.save();
     res.sendStatus(204);
     console.log(savedClient); // Imprimir el objeto que se guardó en la base de datos
-
   } catch (error) {
     console.error(error);
 
@@ -69,15 +78,6 @@ export const GetClients = async (req, res) => {
   res.json(clientes);
 };
 
-export const ClientCount = async (req, res) => {
-  try {
-    const CountClient = await clientModel.countDocuments();
-    res.json({ totalCliente: CountClient });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const GetClient = async (req, res) => {
   const client = await clientModel.findById(req.params.id);
   if (!client) return res.status(404).json({ message: "Task not found" });
@@ -93,7 +93,8 @@ export const DeleteClient = async (req, res) => {
 export const UptdateClient = async (req, res) => {
   const client = await clientModel.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
-    });
+  });
   if (!client) return res.status(404).json({ message: "Task not found" });
   res.json(client);
 };
+

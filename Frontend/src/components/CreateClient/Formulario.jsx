@@ -93,7 +93,7 @@ const Formulario = ({
     }
 
     setTimeout(() => {
-      navigate("/welcome");
+      navigate("/Home");
     }, 1200); // Redirigir después de 1 segundo
   };
 
