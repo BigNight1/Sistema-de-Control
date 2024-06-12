@@ -1,31 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { DashClient } from "../../context/DashContext";
-import DateComponent from "./Date";
 import DashboardCard from "./DashBoardCard";
 import { Card } from "@tremor/react";
-import { AgGridReact } from "ag-grid-react";
+import Calendar from "./Calendar-Date.jsx";
+import SearchedClients from "./SearchedClients.jsx";
 
 const CounterCash = () => {
-  const {
-    CounterClient,
-    // sumPaymentsYape,
-    // sumPaymentsCash,
-    // sumPaymentsGastos,
-    Gasto,
-    Count,
-    Cash,
-    Yape,
-    Clients,
-    
-  } = DashClient();
+  const { CounterClient, Gasto, Count, Cash, Yape } = DashClient();
   const [selectedPayment, setSelectedPayment] = useState("cash");
   const [optionsOrder, setOptionsOrder] = useState(["cash", "yape"]);
 
   useEffect(() => {
     CounterClient();
-    // sumPaymentsYape();
-    // sumPaymentsCash();
-    // sumPaymentsGastos();
   }, []);
 
   useEffect(() => {
@@ -35,44 +21,6 @@ const CounterCash = () => {
       setOptionsOrder(["yape", "cash"]);
     }
   }, [selectedPayment]);
-  
-  const columnDefs = [
-    { headerName: "Fecha", field: "fecha", sortable: true, width: 120 },
-    { headerName: "Nombre", field: "nombre", sortable: true },
-    { headerName: "Número", field: "numero", sortable: true },
-    { headerName: "Trabajo", field: "trabajo", sortable: true },
-    {
-      headerName: "Adelanto",
-      field: "adelanto",
-      sortable: true,
-      cellRenderer: (params) => `S/${params.value}`,
-    },
-    {
-      headerName: "Efectivo",
-      field: "efectivo",
-      sortable: true,
-      cellRenderer: (params) => `S/${params.value}`,
-    },
-    {
-      headerName: "Yape",
-      field: "yape",
-      sortable: true,
-      cellRenderer: (params) => `S/${params.value}`,
-    },
-    {
-      headerName: "Precio",
-      field: "precio",
-      sortable: true,
-      cellRenderer: (params) => `S/${params.value}`,
-    },
-    {
-      headerName: "Gastos",
-      field: "gastos",
-      sortable: true,
-      width: 150,
-      cellRenderer: (params) => `-S/${params.value}`,
-    },
-  ];
 
   return (
     <div className="flex flex-col h-full justify-between">
@@ -115,21 +63,10 @@ const CounterCash = () => {
           color="bg-red-50"
           decorationColor="red"
         />
-        <DateComponent />
+        <Calendar />
       </div>
 
-      <div
-        className="ag-theme-alpine m-2 overflow-x-auto rounded-md mt-4"
-        style={{ height: 520 }}
-      >
-        <AgGridReact
-          columnDefs={columnDefs}
-          rowData={Clients}
-          pagination={true}
-          paginationPageSize={10}
-          paginationPageSizeSelector={false} // Ocultar el selector de tamaño de página
-        />
-      </div>
+      <SearchedClients />
     </div>
   );
 };

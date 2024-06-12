@@ -7,9 +7,9 @@ import { DashClient } from "../../context/DashContext";
 
 registerLocale("es", es);
 
-const DateComponent = () => {
+const Calendar = () => {
   const { fetchDailyData, Clients } = DashClient();
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const datePickerRef = useRef(null);
 
   useEffect(() => {
@@ -48,4 +48,4 @@ const DateComponent = () => {
   );
 };
 
-export default DateComponent;
+export default Calendar;
