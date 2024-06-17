@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
+    "convert-excel-to-json": "node src/script/convertExcelToJson.js",
+    "import-data": "node src/script/importData.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,7 +19,8 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongodb": "^6.6.0",
-    "mongoose": "^8.3.3"
+    "mongoose": "^8.3.3",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
