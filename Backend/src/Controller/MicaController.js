@@ -18,9 +18,21 @@ export const CreateMica = async (req, res) => {
   }
 };
 export const ReadMicas = async (req, res) => {
-  const Mica = micaModel.find();
+  const Mica = await micaModel.find();
   res.json(Mica);
 };
+
+export const FindBrandLenses = async (req, res) => {
+  const { brand } = req.params;
+  const micas = await micaModel.find({ marca: brand });
+
+  if (!micas)
+    return res
+      .status(404)
+      .json({ message: "not found Micas for the specified brand" });
+  return res.json(micas);
+};
+
 export const UpdateMica = async (req, res) => {
   const Mica = await micaModel.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
@@ -33,4 +45,3 @@ export const DeleteMica = async (req, res) => {
   if (!Mica) return res.status(404).json({ message: "Task not found" });
   return res.sendStatus(204);
 };
-
