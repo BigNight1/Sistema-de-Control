@@ -7,6 +7,8 @@ import PageError from "./pages/PageError.jsx";
 import DashBoard from "./components/DashBoard/DashBoard";
 import Clientes from "./pages/Clientes";
 import { DashProvider } from "./context/DashContext";
+import RegistrationHistory from "./components/RegistrationHistory/RegistrationHistory";
+import { RegistroProvider } from "./context/RegistroContext";
 
 function App() {
   return (
@@ -22,6 +24,14 @@ function App() {
             <DashProvider>
               <DashBoard />
             </DashProvider>
+          }
+        />
+        <Route
+          path="/registro"
+          element={
+            <RegistroProvider>
+              <RegistrationHistory />
+            </RegistroProvider>
           }
         />
         <Route path="/client/:id" element={<CreateClient />} />

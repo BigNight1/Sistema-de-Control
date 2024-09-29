@@ -1,4 +1,3 @@
-import React from "react";
 import { Card } from "@tremor/react";
 
 const DashboardCard = ({ title, value, color, decorationColor }) => {

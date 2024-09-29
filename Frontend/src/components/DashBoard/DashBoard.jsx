@@ -1,4 +1,3 @@
-import React from "react";
 import CounterCash from "./CounterCash.jsx";
 import Sliderbar from "../Welcome/Sliderbar";
 

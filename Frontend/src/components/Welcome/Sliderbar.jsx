@@ -13,7 +13,6 @@ import {
 
 import { Link } from "react-router-dom";
 import Client_icon from "../../Icons/Client-icon.jsx";
-import Create_icon from "../../Icons/Create-icon.jsx";
 
 const Sliderbar = () => {
   return (
@@ -47,15 +46,16 @@ const Sliderbar = () => {
               Clientes
             </ListItem>
           </Link>
-
-          {/* <Link to="/clientes/create-client">
+          <Link to="/registro">
             <ListItem>
               <ListItemPrefix>
-                <Create_icon className="h-5 w-5" />
+                <Client_icon className="h-5 w-5" />
               </ListItemPrefix>
-              Crear
+              Registro
             </ListItem>
-          </Link> */}
+          </Link>
+
+         
           <hr className="my-2 border-blue-gray-50" />
 
           <ListItem>

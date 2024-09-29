@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DashClient } from "../../context/DashContext";
 import DashboardCard from "./DashBoardCard";
 import { Card } from "@tremor/react";
